@@ -1,0 +1,9 @@
+[project]
+name = "securelaunch"
+version = "0.1.0"
+description = "Self-hosted passive web security scanning dashboard"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.unittest]
+start-directory = "tests"

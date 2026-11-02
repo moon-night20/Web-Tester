@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+securelaunch.sqlite3*
+.env
+.DS_Store

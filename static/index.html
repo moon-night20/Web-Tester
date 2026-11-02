@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101311">
+    <title>SecureLaunch — security, in focus</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="SecureLaunch home">
+          <span class="brand-mark">S</span><span>secure<span class="brand-light">launch</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <button class="nav-item active" id="nav-overview"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" id="nav-websites"><span class="nav-icon">◎</span> Websites <span class="nav-count" id="site-count">0</span></button>
+        <div class="sidebar-bottom">
+          <div class="zap-status"><span class="status-dot"></span><span><b>Scanner</b><small>OWASP ZAP · passive</small></span></div>
+          <div class="user-card"><div class="avatar" id="avatar">S</div><div class="user-meta"><b id="user-email">Your workspace</b><small>Personal account</small></div><button id="logout" class="icon-button" aria-label="Sign out" hidden>↗</button></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">Workspace <span>/</span> <b id="crumb">Overview</b></div>
+          <div class="top-actions"><span class="secure-label"><span>●</span> Private workspace</span><button class="button button-dark" id="header-scan" hidden>＋ &nbsp;New scan</button></div>
+        </header>
+
+        <section id="auth-view" class="auth-view">
+          <div class="auth-art">
+            <div class="orb orb-one"></div><div class="orb orb-two"></div>
+            <div class="art-caption"><span class="eyebrow">SECURITY, IN FOCUS</span><h2>Know your<br>web's weak spots.</h2><p>Real passive scans. Clear next steps.<br>Confidence built into every check.</p></div>
+            <div class="art-note"><span class="note-check">✓</span> Built for teams that ship with care</div>
+          </div>
+          <div class="auth-panel">
+            <div class="auth-inner">
+              <div class="mobile-brand"><span class="brand-mark">S</span> securelaunch</div>
+              <span class="eyebrow" id="auth-eyebrow">YOUR SECURITY WORKSPACE</span>
+              <h1 id="auth-title">Welcome back</h1>
+              <p class="muted" id="auth-subtitle">Sign in to pick up where you left off.</p>
+              <form id="auth-form">
+                <div id="username-field">
+                  <label for="username" id="username-label">Username or email</label>
+                  <input id="username" name="username" type="text" autocomplete="username" placeholder="Your username or email" minlength="1" required>
+                </div>
+                <div id="email-field" hidden>
+                  <label for="email">Email address</label>
+                  <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com">
+                </div>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="At least 12 characters" required>
+                <div id="auth-error" class="notice error" role="alert" hidden></div>
+                <button class="button button-primary full" id="auth-submit" type="submit">Sign in <span>→</span></button>
+              </form>
+              <p class="auth-switch"><span id="switch-copy">New to SecureLaunch?</span> <button id="switch-auth" class="text-button">Create an account</button></p>
+              <p class="auth-legal">By continuing, you agree to scan only websites you own<br>or are explicitly authorized to assess.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="app-view" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">YOUR SECURITY AT A GLANCE</span><h1 id="page-title">Overview</h1><p class="muted" id="page-subtitle">Keep track of verified websites and their latest security scans.</p></div>
+            <button class="button button-primary" id="new-scan">＋ &nbsp;New scan</button>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span>Verified websites</span><span class="stat-icon mint">◎</span></div><strong id="stat-sites">0</strong><small>Ready for a passive scan</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Latest scan</span><span class="stat-icon lilac">◷</span></div><strong id="stat-latest">—</strong><small id="stat-latest-note">No scans yet</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Open findings</span><span class="stat-icon amber">⌁</span></div><strong id="stat-findings">—</strong><small>From the most recent scan</small></article>
+            <article class="stat-card"><div class="stat-top"><span>Scan mode</span><span class="stat-icon blue">◉</span></div><strong class="mode-value">Passive</strong><small>OWASP ZAP · no active attacks</small></article>
+          </div>
+          <div class="section-heading"><div><h2>Websites</h2><p class="muted">Verify ownership before a website can be scanned.</p></div><button class="button button-outline" id="add-site">＋ Add website</button></div>
+          <div id="sites-list" class="site-list"></div>
+          <div class="section-heading scans-heading"><div><h2>Recent scans</h2><p class="muted">Real alerts returned by OWASP ZAP's passive rules.</p></div><span class="live-label"><i></i> LIVE</span></div>
+          <div id="scans-list" class="scan-list"></div>
+          <div class="section-heading"><div><h2>OWASP Top 10:2025</h2><p class="muted">Latest completed scan · mapped from ZAP alert metadata.</p></div></div>
+          <div id="categories-list" class="category-grid"></div>
+          <div class="footer-note">OWASP Top 10:2025 mapping is inferred from alert metadata. Unmapped alerts remain visible for review.</div>
+        </section>
+      </main>
+    </div>
+    <dialog id="site-dialog" class="dialog">
+      <form method="dialog" class="dialog-close"><button class="icon-button" aria-label="Close">×</button></form>
+      <span class="eyebrow">ADD TO YOUR WORKSPACE</span><h2>Register a website</h2>
+      <p class="muted">Enter a public hostname you control, without https:// or a page path. Localhost and IP addresses cannot be verified. You must be able to edit its DNS records.</p>
+      <form id="site-form">
+        <label for="domain">Website hostname</label><input id="domain" name="domain" placeholder="example.com" autocomplete="url" required>
+        <div id="site-error" class="notice error" role="alert" hidden></div>
+        <button class="button button-primary full" type="submit">Generate verification token <span>→</span></button>
+      </form>
+    </dialog>
+    <dialog id="verify-dialog" class="dialog">
+      <form method="dialog" class="dialog-close"><button class="icon-button" aria-label="Close">×</button></form>
+      <span class="eyebrow">STEP 1 OF 2 · WEBSITE OWNERSHIP</span><h2>Add this DNS record</h2>
+      <p class="muted">Open the DNS settings at the company where this domain's nameservers are managed (often your domain registrar or DNS provider). Create a TXT record with these values:</p>
+      <div class="dns-record">
+        <div class="dns-field"><span>TYPE</span><code>TXT</code></div>
+        <div class="dns-field"><span>HOST / NAME</span><code id="dns-name"></code><button class="copy-button" data-copy="dns-name" type="button">Copy</button></div>
+        <div class="dns-field"><span>VALUE / CONTENT</span><code id="dns-value"></code><button class="copy-button" data-copy="dns-value" type="button">Copy</button></div>
+        <div class="dns-field"><span>TTL</span><code>Default / Auto</code></div>
+      </div>
+      <p class="verify-help">If your DNS provider automatically adds the domain name, enter only <code>_securelaunch-challenge</code> as the host. Do not put this record in your website files or hosting settings. After saving, wait a few minutes for DNS to update.</p>
+      <div id="verify-error" class="notice error" role="alert" hidden></div>
+      <button class="button button-primary full" id="verify-button">I added it — check DNS <span>→</span></button>
+    </dialog>
+    <dialog id="scan-dialog" class="dialog">
+      <form method="dialog" class="dialog-close"><button class="icon-button" aria-label="Close">×</button></form>
+      <span class="eyebrow">PASSIVE SECURITY CHECK</span><h2>Start a new scan</h2>
+      <p class="muted">ZAP must be running at the configured API address. SecureLaunch will crawl your verified hostname and analyze traffic with passive rules only.</p>
+      <form id="scan-form">
+        <label for="scan-site">Verified website</label><select id="scan-site" required></select>
+        <label for="scan-url">Start URL <span class="label-hint">same verified hostname · standard ports</span></label><input id="scan-url" type="url" placeholder="https://example.com" required>
+        <div id="scan-error" class="notice error" role="alert" hidden></div>
+        <button class="button button-primary full" type="submit">Start passive scan <span>→</span></button>
+      </form>
+    </dialog>
+    <dialog id="finding-dialog" class="dialog finding-dialog">
+      <form method="dialog" class="dialog-close"><button class="icon-button" aria-label="Close">×</button></form>
+      <span class="eyebrow">FINDING DETAILS</span><h2 id="finding-title">Finding</h2>
+      <div class="finding-meta" id="finding-meta"></div>
+      <h3>What ZAP observed</h3><p class="finding-description" id="finding-description"></p>
+      <h3>Recommended remediation</h3><p class="finding-solution" id="finding-solution"></p>
+      <a id="finding-url" class="finding-link" target="_blank" rel="noopener noreferrer">Open affected URL ↗</a>
+    </dialog>
+    <dialog id="comparison-dialog" class="dialog">
+      <form method="dialog" class="dialog-close"><button class="icon-button" aria-label="Close">×</button></form>
+      <span class="eyebrow">RETEST COMPARISON</span><h2 id="comparison-title">Scan comparison</h2>
+      <div id="comparison-summary" class="comparison-summary"></div>
+      <div id="comparison-findings" class="comparison-findings"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>
